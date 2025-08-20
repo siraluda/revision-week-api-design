@@ -1,0 +1,26 @@
+emit:
+  - "@typespec/openapi3"
+  - "@azure-tools/typespec-ts"
+options:
+  "@typespec/openapi3":
+    emitter-output-dir: "{output-dir}/schema"
+    openapi-versions:
+      - 3.1.0
+  "@azure-tools/typespec-ts":
+    emitter-output-dir: "{output-dir}/sdk/typescript"
+
+output-dir: ./dist
+
+# Enforce linting rules
+linter:
+  extends:
+    - "@typespec/http/linter-ruleset" # HTTP best practices
+    - "@typespec/openapi3/linter-ruleset" # OpenAPI compliance
+  rules:
+    no-duplicate-models: error
+    no-inline-enums: warning
+    require-doc-comments: warning
+
+format:
+  indent: 2
+  lineWidth: 100

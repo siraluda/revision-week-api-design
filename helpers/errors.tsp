@@ -1,0 +1,34 @@
+import "@typespec/http";
+using Http;
+
+namespace RevisionWeekApi.Helpers.Errors;
+
+@error
+model NotFoundError {
+  code: "NOT_FOUND";
+  message: string;
+}
+
+@error
+model ValidationError {
+  code: "VALIDATION_ERROR";
+  message: string;
+  details: string[];
+}
+
+@error
+model UnauthorizedError {
+  code: "UNAUTHORIZED";
+  message: string;
+}
+
+@error
+model InternalServerError {
+  code: "INTERNAL_SERVER_ERROR";
+  message: string;
+}
+
+model InternalServerErrorResponse {
+  @statusCode statusCode: 500;
+  @body error: InternalServerError;
+}
