@@ -69,7 +69,7 @@ jobs:
         run: |
           cat > .npmrc <<EOL
           //npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}
-          @siraluda/revisionweek-client:registry=https://npm.pkg.github.com
+          ${{ vars.SDK_PACKAGE_NAME }}:registry=https://npm.pkg.github.com
           always-auth=true
           EOL
           cat .npmrc
