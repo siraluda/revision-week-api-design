@@ -64,12 +64,16 @@ jobs:
           npm pkg set version=$VERSION --prefix dist/sdk/javascript
           cat dist/sdk/javascript/package.json
 
-      - name: Publish SDK
+      - name: Setup .npmrc for publish
         working-directory: dist/sdk/javascript
         run: |
-          touch .npmrc
-          echo ${{ vars.NPMRC_FILE }} > .npmrc
+          cat > .npmrc <<EOL
+          //npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}
+          ${{ vars.SDK_PACKAGE_NAME }}:registry=https://npm.pkg.github.com
+          always-auth=true
+          EOL
           cat .npmrc
-          ls -a
-          sed -i 's/${NODE_AUTH_TOKEN}/${{ secrets.GITHUB_TOKEN }}/g' .npmrc
-          npm publish
+
+      - name: Publish SDK
+        working-directory: dist/sdk/javascript
+        run: npm publish
