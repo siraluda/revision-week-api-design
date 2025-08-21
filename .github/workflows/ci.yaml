@@ -67,6 +67,9 @@ jobs:
       - name: Publish SDK
         working-directory: dist/sdk/javascript
         run: |
+          touch .npmrc
           echo ${{ vars.NPMRC_FILE }} > .npmrc
+          cat .npmrc
+          ls -a
           sed -i 's/${NODE_AUTH_TOKEN}/${{ secrets.GITHUB_TOKEN }}/g' .npmrc
           npm publish
