@@ -76,5 +76,4 @@ jobs:
 
       - name: Publish SDK
         working-directory: dist/sdk/javascript
-        run: |
-          npm publish
+        run: npm publish
