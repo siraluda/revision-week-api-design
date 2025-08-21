@@ -35,7 +35,7 @@ jobs:
       - name: Install SDK Deps and Build
         working-directory: dist/sdk/javascript
         run: |
-          npm ci
+          npm install
           npm run build
 
       - name: Setup SDK Package.json
