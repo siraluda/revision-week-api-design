@@ -2,48 +2,48 @@ import "@typespec/http";
 import "./errors.tsp";
 
 using Http;
-using RevisionWeekApi.Helpers.Errors;
+using RevisionWeekApi.Errors;
 
-namespace RevisionWeekApi.Helpers.ResponseModel;
+namespace RevisionWeekApi.ResponseModels;
 
 model ResourceListResponse<T> {
   ...OkResponse;
-  ...Body<T[]>;
+  @bodyRoot bodyContent: T[];
 }
 
 model ResourceResponse<T> {
   ...OkResponse;
-  ...Body<T>;
+  @bodyRoot bodyContent: T;
 }
 
 model ResourceCreatedResponse<T> {
   ...CreatedResponse;
-  ...Body<T[]>;
+  @bodyRoot bodyContent: T;
 }
 
 model ResourceAcceptedResponse<T> {
   ...AcceptedResponse;
-  ...Body<T[]>;
+  @bodyRoot bodyContent: T;
 }
 
 model ResourceErrorResponse {
   ...BadRequestResponse;
-  ...Body<ValidationError>;
+  @bodyRoot bodyContent: ValidationError;
 }
 
 model ResourceNotFoundResponse {
   ...NotFoundResponse;
-  ...Body<NotFoundError>;
+  @bodyRoot bodyContent: NotFoundError;
 }
 
 model ResourceUnauthorizedResponse {
   ...UnauthorizedResponse;
-  ...Body<ValidationError>;
+  @bodyRoot bodyContent: UnauthorizedError;
 }
 
 model ResourceSuccessResponse {
   ...OkResponse;
-  ...Body<string>;
+  @bodyRoot bodyContent: string;
 }
 
 model ResourceNoContentResponse {

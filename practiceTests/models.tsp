@@ -1,4 +1,4 @@
-namespace RevisionWeekApi.Models.PracticeTest;
+namespace RevisionWeekApi.PracticeTests;
 
 enum Difficulty {
   Easy,
@@ -75,5 +75,3 @@ model TestItem {
   @visibility(Lifecycle.Read)
   score: decimal;
 }
-
-
