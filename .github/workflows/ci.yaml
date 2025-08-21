@@ -42,11 +42,11 @@ jobs:
         working-directory: dist/sdk/javascript
         run: |
           ls
-          npm pkg set name=${{ vars.SDK_PACKAGE_NAME }}
-          npm pkg set description=${{ vars.SDK_PACKAGE_DESCRIPTION }}
+          npm pkg set name="${{ vars.SDK_PACKAGE_NAME }}"
+          npm pkg set description="${{ vars.SDK_PACKAGE_DESCRIPTION }}"
           npm pkg set main="dist/index.ts"
           npm pkg set types="dist/index.d.ts"
-          npm pkg set files[0]="dist"
+          npm pkg set files='["dist"]'
           npm pkg set publishConfig.registry="https://npm.pkg.github.com/"
 
       - name: Update SDK Version based on conventional commit message
