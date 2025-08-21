@@ -1,26 +1,20 @@
 emit:
   - "@typespec/openapi3"
-  - "@azure-tools/typespec-ts"
+  - "@typespec/http-client-js"
 options:
   "@typespec/openapi3":
     emitter-output-dir: "{output-dir}/schema"
     openapi-versions:
       - 3.1.0
-  "@azure-tools/typespec-ts":
-    emitter-output-dir: "{output-dir}/sdk/typescript"
+  "@typespec/http-client-js":
+    emitter-output-dir: "{output-dir}/sdk/javascript"
+    package-details:
+      name: "@siraluda/revisionweek-client"
+      description: "This is a javascript/typescript client library for the RevisionWeek API"
+      version: 1.0.0
 
-output-dir: ./dist
+output-dir: "{project-root}/dist"
 
-# Enforce linting rules
 linter:
   extends:
-    - "@typespec/http/linter-ruleset" # HTTP best practices
-    - "@typespec/openapi3/linter-ruleset" # OpenAPI compliance
-  rules:
-    no-duplicate-models: error
-    no-inline-enums: warning
-    require-doc-comments: warning
-
-format:
-  indent: 2
-  lineWidth: 100
+    - "@typespec/http/all"

@@ -1,4 +1,5 @@
-namespace RevisionWeekApi.Models.PresignedUrl;
+import "@typespec/http";
+namespace RevisionWeekApi.PresignedUrls;
 
 /**
  Input model used to create a presigned url for a document/file

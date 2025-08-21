@@ -1,25 +1,23 @@
-import "@typespec/http";
-import "./common-service.tsp";
-import "../models/presignedurl.tsp";
-import "../helpers/responseModel.tsp";
+import "./models.tsp";
+import "../common/responseModel.tsp";
 
 using Http;
-using RevisionWeekApi.Services.Common;
-using RevisionWeekApi.Helpers.ResponseModel;
-using RevisionWeekApi.Models.PresignedUrl;
+using RevisionWeekApi.ResponseModels;
+
+namespace RevisionWeekApi.PresignedUrls;
 
 @route("/presigned-url")
+@tag("Presigned Urls")
 interface presignedUrl {
   @doc("Get a presigned url which can be used to perform document upload operations")
   @post
-  create(@body body: CreatePresignedUrlInput):
+  createPresignedUrl(@body body: CreatePresignedUrlInput):
     | ResourceCreatedResponse<PresignedUrlOutput>
     | ResourceAcceptedResponse<PresignedUrlOutput>
     | ResourceErrorResponse
     | ResourceUnauthorizedResponse;
 
   @doc("Get a presigned url which can be used to perform download or delete operations")
-  @route("/{id}")
   @get
-  getPresignedUrl is read<PresignedUrl>;
+  getPresignedUrl(): ResourceResponse<PresignedUrl> | ResourceNotFoundResponse | ResourceUnauthorizedResponse;
 }

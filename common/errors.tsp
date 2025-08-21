@@ -1,7 +1,7 @@
 import "@typespec/http";
 using Http;
 
-namespace RevisionWeekApi.Helpers.Errors;
+namespace RevisionWeekApi.Errors;
 
 @error
 model NotFoundError {

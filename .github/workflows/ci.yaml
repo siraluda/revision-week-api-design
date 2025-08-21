@@ -1,0 +1,71 @@
+name: RevisionWeek API CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-release:
+    name: Build, Release and Publish SDK
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+
+      - name: Install packages
+        run: npm ci
+
+      - name: Format and Compile TypeSpec Code
+        run: |
+          tsp format "**/*tsp"
+          tsp compile main.tsp
+
+      - name: Setup SDK Package.json
+        working-directory: dist/sdk/javascript
+        run: |
+          npm pkg set name=${{ vars.SDK_PACKAGE_NAME }}
+          npm pkg set description=${{ vars.SDK_PACKAGE_DESCRIPTION }}
+          npm pkg set main="dist/index.ts"
+          npm pkg set types="dist/index.d.ts"
+          npm pkg set files[0]="dist"
+          npm pkg set publishConfig.registry=https://npm.pkg.github.com/
+
+      - name: Install SDK Deps and Build
+        working-directory: dist/sdk/javascript
+        run: |
+          npm ci
+          npm run build
+
+      - name: Update SDK Version based on conventional commit message
+        id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: node
+
+      - name: Set SDK version from Release Please
+        if: steps.release.outputs.release_created == 'true'
+        run: |
+          VERSION=${{ steps.release.outputs.version }}
+          echo "Setting SDK to version $VERSION"
+          npm pkg set version=$VERSION --prefix dist/sdk/javascript
+          cat dist/sdk/javascript/package.json
+
+      - name: Publish SDK
+        working-directory: dist/sdk/javascript
+        run: |
+          echo ${{ vars.NPMRC_FILE }} > .npmrc
+          sed -i 's/${NODE_AUTH_TOKEN}/${{ secrets.GITHUB_TOKEN }}/g' .npmrc
+          npm publish

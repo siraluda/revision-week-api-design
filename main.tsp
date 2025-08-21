@@ -1,13 +1,21 @@
+import "@typespec/http";
 import "@typespec/versioning";
-import "./models/document.tsp";
-import "./services/document-service.tsp";
-import "./models/presignedurl.tsp";
-import "./services/presignedurl-service.tsp";
+import "./documents/service.tsp";
+import "./practiceTests/service.tsp";
+import "./presignedUrls/service.tsp";
 
+using Http;
 using Versioning;
 
 @versioned(RevisionWeekApi.Versions)
 @service(#{ title: "RevisionWeek API" })
+@server(
+  "{endpoint}",
+  "Revision Week API Endpoint",
+  {
+    endpoint: string,
+  }
+)
 namespace RevisionWeekApi;
 
 enum Versions {
