@@ -29,8 +29,8 @@ jobs:
 
       - name: Format and Compile TypeSpec Code
         run: |
-          tsp format "**/*tsp"
-          tsp compile main.tsp
+          npx tsp format "**/*tsp"
+          npx tsp compile main.tsp
 
       - name: Setup SDK Package.json
         working-directory: dist/sdk/javascript
